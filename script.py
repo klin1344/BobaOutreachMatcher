@@ -1,3 +1,13 @@
+"""
+An script to match teams with questions based on difficulty and category of questions and 
+confidence of teams.  Takes a greedy approach.
+
+Authors:
+
+Kevin Lin
+Titus Deng
+"""
+
 import csv
 import numpy as np
 import math
