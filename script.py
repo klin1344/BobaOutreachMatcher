@@ -1,9 +1,7 @@
 """
 An script to match teams with questions based on difficulty and category of questions and 
 confidence of teams.  Takes a greedy approach.
-
 Authors:
-
 Kevin Lin
 Titus Deng
 """
@@ -12,8 +10,9 @@ import csv
 import numpy as np
 import math
 
-TEAM_DATA_CSV = 'Fall 2018 Team_Question Data - Team Data.csv'
-QUESTION_DATA_CSV = 'Copy3 of Fall 2018 Questions - Responses.csv'
+TEAM_DATA_CSV = 'Fall-2018-Team_Question-Data-Team-Data.csv'
+QUESTION_DATA_CSV = 'Copy3-of-Fall-2018-Questions-Responses.csv'
+OUTPUT_CSV = 'Output Matched Teams and Questions.csv'
 TOPICS = ['Bible',
           'Character of God',
           'Comparative Religion',
@@ -58,11 +57,13 @@ def main():
     matchedTeams, remainderQuestions = matchQuestionsToTeams(
         sortedTeamsList, sortedQuestionsList)
 
-    for team in matchedTeams:
-        print team.teammate1, team.teammate2
-        print[q.question for q in team.questions]
-        print ''
-    print 'Remainder:', [q.question for q in remainderQuestions]
+    outputCSV(matchedTeams, OUTPUT_CSV, remainderQuestions)
+
+    # for team in matchedTeams:
+    #     print team.teammate1, team.teammate2
+    #     print[q.question for q in team.questions]
+    #     print ''
+    # print 'Remainder:', [q.question for q in remainderQuestions]
 
 
 def populateTeamsList(sheet):
@@ -169,6 +170,28 @@ def matchQuestionsToTeams(teamsList, questionsList):
     #     if List2 is empty, assign (# of questions per team - # of current questions) of onesQlist questions
     #     else: do nothing (if there are no more easy/filler questsions)
     # pop the sepcific x questions from questionList
+
+
+def outputCSV(teams, outputcsv, leftover):
+
+    with open(outputcsv, mode='w') as output_csv:
+        output_writer = csv.writer(
+            output_csv, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        counter = 1
+        output_writer.writerow(
+            ["Leftover Questions (Need manual assignment): "])
+        for q in leftover:
+            output_writer.writerow([q.question])
+        for team in teams:
+            output_writer.writerow(
+                ["Team " + str(counter) + ":" + team.teammate1 + " " + team.teammate2])
+            q_counter = 1
+            for q in team.questions:
+                output_writer.writerow(
+                    ["Question " + str(q_counter) + ":" + " " + q.question])
+                q_counter += 1
+            output_writer.writerow([""])
+            counter += 1
 
 
 main()
