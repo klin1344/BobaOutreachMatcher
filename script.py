@@ -184,10 +184,10 @@ def outputCSV(teams, outputcsv, leftover):
             output_writer.writerow([q.question])
         for team in teams:
             output_writer.writerow(
-                ['Teammate 1', 'Teammate 2', 'Max confidence'])
+                ['Teammate 1', 'Teammate 2', 'Max confidence', 'Categories'])
 
             output_writer.writerow(
-                [team.teammate1, team.teammate2, team.confidence])
+                [team.teammate1, team.teammate2, team.confidence, ', '.join([TOPICS[index]if choice == 1 else '' for index, choice in enumerate(team.breadth)])])
             q_counter = 1
             output_writer.writerow(["Question", "Category", "Difficulty"])
             for q in team.questions:
